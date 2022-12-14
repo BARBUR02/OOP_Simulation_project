@@ -4,6 +4,10 @@ public class GenomeModifier {
 
     private static final int posCount=8;
 
+    public static int randomOrient(){
+        return (int) (Math.random()*posCount);
+    }
+
     public static int[] createGenome(int n){
         int[] genomeArr= new int[n];
         for ( int i=0;i<n;i++){

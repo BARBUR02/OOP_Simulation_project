@@ -10,6 +10,8 @@ import static java.lang.Math.min;
 
 public class GrassField {
     private int bushNumber;
+
+    private int animalNumber;
     private int width;
     private int height;
     private Map<Vector2d,Grass> bushes = new HashMap<>();
@@ -29,8 +31,10 @@ public class GrassField {
         return new Vector2d(width,height);
     }
 
-    public GrassField(int bushNumber) {
+    public GrassField(int width ,int height,int bushNumber) {
         this.bushNumber = bushNumber;
+        this.width=width;
+        this.height=height;
         initBushes(bushNumber);
     }
 

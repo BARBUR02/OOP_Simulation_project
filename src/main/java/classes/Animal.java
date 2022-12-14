@@ -4,6 +4,7 @@ public class Animal {
     //0-7 (8 wartosci co 45*)
 
     private Vector2d position;
+
     private int orient;
     private int energy;
     private int[] genome;
@@ -14,6 +15,7 @@ public class Animal {
         this.genome= GenomeModifier.createGenome(n);
         this.energy=energy;
         this.position=position;
+        this.orient = GenomeModifier.randomOrient();
     }
 
 //    constructor when we have array of genes
@@ -21,6 +23,7 @@ public class Animal {
         this.genome=genes;
         this.energy=energy;
         this.position=position;
+        this.orient = GenomeModifier.randomOrient();
     }
 
     public boolean isAt(Vector2d position) {
