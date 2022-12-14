@@ -1,5 +1,7 @@
 package classes;
 
+import java.util.Vector;
+
 public class Animal {
     //0-7 (8 wartosci co 45*)
 
@@ -9,6 +11,8 @@ public class Animal {
     private int energy;
     private int[] genome;
     private int currentGenomeIndex;
+
+    private GrassField map;
 
     // n is length of genome /constructing first Animals
     public Animal(int n, GrassField map, int energy, Vector2d position){
@@ -31,7 +35,7 @@ public class Animal {
     }
 
     public void  changeCurrentGenomeIndex(){
-        this.currentGenomeIndex= GenomeModifier.changeGenomeIndex();
+        this.currentGenomeIndex = GenomeModifier.changeGenomeIndex();
     }
 
     public Vector2d getPosition() {
@@ -40,4 +44,25 @@ public class Animal {
 
     public void setPosition(Vector2d position){ this.position=position;}
 
+    private void rotate() {
+        this.orient = (this.orient + this.genome[this.currentGenomeIndex]) % 8;
+        this.currentGenomeIndex++;
+    }
+
+    public void move() {
+        rotate();
+        Vector2d wantedPos;
+        switch (this.orient) {
+            case 0 -> wantedPos = this.position.add(new Vector2d(0, 1));
+            case 1 -> wantedPos = this.position.add(new Vector2d(1, 1));
+            case 2 -> wantedPos = this.position.add(new Vector2d(1, 0));
+            case 3 -> wantedPos = this.position.add(new Vector2d(1, -1));
+            case 4 -> wantedPos = this.position.add(new Vector2d(0, -1));
+            case 5 -> wantedPos = this.position.add(new Vector2d(-1, -1));
+            case 6 -> wantedPos = this.position.add(new Vector2d(-1, 0));
+            case 7 -> wantedPos = this.position.add(new Vector2d(-1, 1));
+            default -> wantedPos = this.position;
+        }
+        this.position = wantedPos;
+    }
 }
