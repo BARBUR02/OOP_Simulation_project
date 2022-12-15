@@ -7,26 +7,67 @@ public class Animal {
 
     private Vector2d position;
 
-    private int orient;
+//    private int orient;
+    // tych bedziemy uzywac podczas rozstrzygania ktore je
+    // i ktore sie rozmnaza
+    private int childCount;
+
+    public void setChildCount(int childCount) {
+        this.childCount = childCount;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public int getChildCount() {
+        return childCount;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    private int age;
+    public int orient;
     private int energy;
-    private int[] genome;
+    public int[] genome;
+//    private int[] genome;
     private int currentGenomeIndex;
 
-    private GrassField map;
+    private IMap map;
+
+    public int[] getGenome() {
+        return genome;
+    }
 
     // n is length of genome /constructing first Animals
-    public Animal(int n, GrassField map, int energy, Vector2d position){
+    public Animal(int n, IMap map, int energy, Vector2d position){
         this.genome= GenomeModifier.createGenome(n);
         this.energy=energy;
         this.position=position;
         this.orient = GenomeModifier.randomOrient();
+        this.map=map;
+        this.age=0;
+        this.childCount=0;
     }
 
 //    constructor when we have array of genes
-    public Animal(int[] genes, GrassField map, int energy, Vector2d position){
+    public Animal(int[] genes, IMap map, int energy, Vector2d position){
+        this.map = map;
         this.genome=genes;
         this.energy=energy;
         this.position=position;
+        this.childCount=0;
+        this.age=0;
         this.orient = GenomeModifier.randomOrient();
     }
 
@@ -35,7 +76,7 @@ public class Animal {
     }
 
     public void  changeCurrentGenomeIndex(){
-        this.currentGenomeIndex = GenomeModifier.changeGenomeIndex();
+        this.currentGenomeIndex = GenomeModifier.changeGenomeIndex(genome.length);
     }
 
     public Vector2d getPosition() {
@@ -46,7 +87,13 @@ public class Animal {
 
     private void rotate() {
         this.orient = (this.orient + this.genome[this.currentGenomeIndex]) % 8;
-        this.currentGenomeIndex++;
+        // wariant nieco szalenstwa
+        if (Math.random()<0.2){
+            changeCurrentGenomeIndex();
+        }
+        else {
+            this.currentGenomeIndex = (currentGenomeIndex + 1) % genome.length;
+        }
     }
 
     public void move() {
@@ -63,6 +110,11 @@ public class Animal {
             case 7 -> wantedPos = this.position.add(new Vector2d(-1, 1));
             default -> wantedPos = this.position;
         }
-        this.position = wantedPos;
+        map.moveAtMap(this,wantedPos);
+
+        // each time animal moves the new day comes
+        this.energy--;
+        this.age+=1;
+//        this.position = wantedPos;
     }
 }

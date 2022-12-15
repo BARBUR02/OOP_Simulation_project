@@ -27,20 +27,21 @@ public class GenomeModifier {
         return genome;
     }
 
-    public static int changeGenomeIndex(){
-        return (int) (Math.random()*posCount);
+    public static int changeGenomeIndex(int n){
+        return (int) (Math.random()*n);
     }
 
     // function creating child genome based od calculated proportion
     // and parent genomes (stronger as first param/ weaker as following)
     public static int[] fuseGenoms(int[] stronger, int[] weaker, float proportion){
-        int greaterNum = (int)( proportion*posCount );
-        int[] resultGenome = new int[posCount];
+        int genomeLength= stronger.length;
+        int greaterNum = (int)( proportion*genomeLength );
+        int[] resultGenome = new int[genomeLength];
         int scenario=(int) (Math.random()*2);
         //wiekszosc z lewej strony
         if (scenario==0)
         {
-            for ( int i=0; i<posCount;i++){
+            for ( int i=0; i<genomeLength;i++){
                 if(i<greaterNum){
                     resultGenome[i]=stronger[i];
                 }
@@ -51,8 +52,8 @@ public class GenomeModifier {
         }
         //odwrotnie
         else{
-            for ( int i=0; i<posCount;i++){
-                if(i>=greaterNum){
+            for ( int i=0; i<genomeLength;i++){
+                if(i>= genomeLength- greaterNum){
                     resultGenome[i]=stronger[i];
                 }
                 else{

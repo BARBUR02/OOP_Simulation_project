@@ -1,139 +1,70 @@
 package classes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class GrassField {
-    private int bushNumber;
+public class GrassField extends AbstractMap {
 
-    private int animalNumber;
-    private int width;
-    private int height;
-    private Map<Vector2d,Grass> bushes = new HashMap<>();
+    // Maybe we will use it in 'toksyczne trupy' task
+    private Map<Vector2d, Integer> objectCount = new HashMap<>();
 
-//    Now we have list of animas for each coordinates
-    private Map<Vector2d, ArrayList <Animal>> animals = new HashMap<>();
 
-    public Map <Vector2d,ArrayList <Animal>>  getAnimals() {
-        return this.animals;
-    }
-
-    public Vector2d getLeftBottom() {
-        return new Vector2d(0,0);
-    }
-
-    public Vector2d getRightUp() {
-        return new Vector2d(width,height);
-    }
-
-    public GrassField(int width ,int height,int bushNumber) {
-        this.bushNumber = bushNumber;
-        this.width=width;
-        this.height=height;
-        initBushes(bushNumber);
+    public GrassField(int width, int height, int grassNum, int genomeLength, int animalNum,
+                      int startingEnergy, int reproductionEnergy, int energyBoost, int dailyGrass) {
+        this.day = 0;
+        this.width = width;
+        this.height = height;
+        this.bushEnergyBoost = energyBoost;
+        this.genomeLength = genomeLength;
+        this.dailyGrass = dailyGrass;
+        this.startingEnergy = startingEnergy;
+        this.reproductionEnergyThreshhold = reproductionEnergy;
+        this.initBushes(grassNum);
+//        for (Vector2d pos : bushes.keySet()) {
+//            System.out.println(pos);
+//        }
+        this.initAnimals(animalNum);
+//        for (Animal animal : animals) {
+//            System.out.println(animal.getPosition());
+//        }
     }
 
 
-    public void initBushes(int bushNumber) {
-        if (bushNumber == 0) return;
-        this.bushes = new HashMap<Vector2d,Grass>();
-        for (int i = 0; i < bushNumber; i++) {
-            Vector2d position=getNewPosition();
-            Grass grass=new Grass(position);
-            bushes.put(position,grass);
+    @Override
+    public void renderGrass(int bushNum) {
+        //narazie bez wariantu zadania (powtorzona init grass)
+        for (int i = 0; i < bushNum; i++) {
+            if (this.bushes.size() == width * height) {
+                break;
+            }
+            Vector2d newPos = this.randomVectorGenerator();
+            while (this.grassAt(newPos) != null) {
+                newPos = this.randomVectorGenerator();
+            }
+            this.bushes.put(newPos, new Grass(newPos));
         }
     }
 
-    public Vector2d getNewPosition() {
-        int[] coordinates = randomCoordinates(this.bushNumber);
-        Vector2d candidateVector = new Vector2d(coordinates[0], coordinates[1]);
-        while (isOccupied(candidateVector)) {
-            coordinates = randomCoordinates(bushNumber);
-            candidateVector = new Vector2d(coordinates[0], coordinates[1]);
+    @Override
+    public void moveAtMap(Animal animal, Vector2d position) {
+        Vector2d newPos;
+        if (width < position.x || position.x < 0 || height < position.y || position.y < 0) {
+//            we create new random position for animal and add element to our map
+//            of current state positions
+            newPos = randomVectorGenerator();
+        } else {
+            newPos = position;
         }
-//        bushes.add(new Grass(candidateVector));
-        return candidateVector;
-    }
-
-
-    public int[] randomCoordinates(int n) {
-        Random generator = new Random();
-        return new int[]{generator.nextInt((int) Math.sqrt(n * 10) + 1),
-                generator.nextInt((int) Math.sqrt(n * 10) + 1)};
-    }
-
-    public Map<Vector2d,Grass> getBushes() {
-        return bushes;
-    }
-
-    public void moveGrass(Vector2d position) {
-        Grass toChange;
-        if (bushes.get(position) != null ) {
-            toChange = bushes.get(position);
-            Vector2d vector=getNewPosition();
-            toChange.setPosition(vector);
-            bushes.remove(position);
-            bushes.put(vector,toChange);
+        SortedSet<Animal> newSet = currAnimalPos.get(newPos);
+        if (newSet == null) {
+            // we create Treeset from AbstractMap with custom Comparator
+            newSet = this.createAnimalSet();
+            currAnimalPos.put(newPos, newSet);
         }
-
-    }
-
-    // We have to change this
-    public boolean canMoveTo(Vector2d position){
-        Object mapElement = objectAt(position);
-        if ((mapElement instanceof Animal[])) return false;
-        if ((mapElement instanceof Grass)) {
-//            System.out.println("PRZED:\n-----\n"+this);
-//            System.out.println("Pozycja przed: " + position);
-//            animals.remove(animal.getPosition());
-            Vector2d vector=getNewPosition();
-            bushes.remove(position);
-            Grass grassElement = (Grass) mapElement;
-            grassElement.setPosition(vector);
-            bushes.put(vector,grassElement);
-
-//            System.out.println("PO:\n----\n"+this);
-//            System.out.println("Zmieniona pozycja: "+grassElement.getPosition());
-        }
-        return true;
-    }
-
-
-
-    public Object objectAt(Vector2d position) {
-        if (animals.get(position)!=null){
-            return animals.get(position);
-        }
-
-        if (bushes.get(position)!=null){
-            return bushes.get(position);
-        }
-
-        return null;
-    }
-
-
-
-
-
-    public boolean place(Animal animal) throws IllegalArgumentException{
-        if (canMoveTo(animal.getPosition())) {
-            if (animals.get(animal.getPosition())==null)
-//                animals.put(animal.getPosition(),animal);
-                animals.get(animal.getPosition()).add(animal);
-            return true;
-        }
-        throw new IllegalArgumentException("Bledne pole : "+animal.getPosition());
-    }
-
-    public boolean isOccupied(Vector2d position) {
-        if (objectAt(position) == null) return false;
-        return true;
+        newSet.add(animal);
+        animal.setPosition(newPos);
     }
 
 

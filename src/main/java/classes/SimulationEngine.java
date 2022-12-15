@@ -1,8 +1,8 @@
 package classes;
 
-public class SimulationEngine {
+public class SimulationEngine implements ISimulationEngine {
 
-    //statystki symulacji
+    //simulation statistics
     private int height;
     private int width;
     private int startingGrassCount;
@@ -15,9 +15,13 @@ public class SimulationEngine {
     private int maximalMutationCount;
     private int animalGenomeLentgh;
 
-    private GrassField map;
+    private IMap map;
 
-    public SimulationEngine(int height, int width, int startingGrassCount, int startingAnimalCount, int energyViaGrass, int dailyGrassGrowth, int startingAnimalEnergy, int reproductionEnergyCost, int minimalMutationCount, int maximalMutationCount, int animalGenomeLentgh) {
+    public SimulationEngine(int height, int width, int startingGrassCount,
+                            int startingAnimalCount, int energyViaGrass,
+                            int dailyGrassGrowth, int startingAnimalEnergy,
+                            int reproductionEnergyCost, int minimalMutationCount,
+                            int maximalMutationCount, int animalGenomeLentgh) {
         this.startingGrassCount = startingGrassCount;
         this.startingAnimalCount = startingAnimalCount;
         this.energyViaGrass = energyViaGrass;
@@ -27,18 +31,26 @@ public class SimulationEngine {
         this.minimalMutationCount = minimalMutationCount;
         this.maximalMutationCount = maximalMutationCount;
         this.animalGenomeLentgh = animalGenomeLentgh;
-        this.map = new GrassField(width, height ,startingGrassCount);
-        init(this.startingAnimalCount);
+        this.map = new GrassField(width, height ,startingGrassCount,animalGenomeLentgh
+        ,startingAnimalCount, startingAnimalEnergy, reproductionEnergyCost,
+                energyViaGrass,dailyGrassGrowth);
     }
 
-    private void init(int n){
-        for (int i=0;i<n;i++){
 
-        }
-    }
 
     // controls each life cycle of map (each day)
     public void run(){
-
+        for (int i=0;i<6;i++) {
+            this.map.manageDead();
+            this.map.clearDayInfo();
+            this.map.manageAnimalMoves();
+            this.map.manageEating();
+            this.map.manageReproduction();
+            this.map.renderGrass(dailyGrassGrowth);
+            System.out.println(this.map);
+            System.out.println("||| We got num of Animals: "+this.map.getAnimalsCount());
+            System.out.println("||| We got num of Bushes: "+this.map.getGrassCount()+"\n\n");
+            this.map.setDay(this.map.getDay()+1);
+        }
     }
 }
