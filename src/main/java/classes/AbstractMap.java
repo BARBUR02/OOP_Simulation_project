@@ -14,8 +14,12 @@ public abstract class AbstractMap implements IMap {
     protected int dailyGrass;
     protected int startingEnergy;
     protected int reproductionEnergyThreshhold;
+    protected int healthyAnimalThreshhold;
     protected int genomeLength;
 
+    protected int minimalMutationChangesNum;
+
+    protected int maximalMutationChangesNum;
     // list of animals in the map (at current state)
     protected LinkedList<Animal> animals = new LinkedList<>();
 
@@ -176,7 +180,7 @@ public abstract class AbstractMap implements IMap {
             Animal strongerAnimal = animalsArr.get(0);
             Animal weakerAnimal = animalsArr.get(1);
             // unnecessary to check strongest then
-            if (weakerAnimal.getEnergy() < reproductionEnergyThreshhold) {
+            if (weakerAnimal.getEnergy() < this.healthyAnimalThreshhold) {
                 continue;
             }
             int[] strongerGenome = strongerAnimal.getGenome();
@@ -187,10 +191,10 @@ public abstract class AbstractMap implements IMap {
             strongerAnimal.setChildCount(strongerAnimal.getChildCount() + 1);
             weakerAnimal.setChildCount(weakerAnimal.getChildCount() + 1);
             int[] childGenome = GenomeModifier.fuseGenoms(strongerGenome, weakerGenome, proportion);
-            GenomeModifier.mutateGenome(childGenome);
+            childGenome=GenomeModifier.mutateGenome(childGenome,minimalMutationChangesNum,maximalMutationChangesNum);
             System.out.println("ANIMAL CREATED!");
 //            this.animals.add(new Animal(childGenome, (GrassField) this, startingEnergy, position));
-            this.place(new Animal(childGenome,  this, startingEnergy, position),position);
+            this.place(new Animal(childGenome,  this, 2*reproductionEnergyThreshhold, position),position);
         }
     }
 

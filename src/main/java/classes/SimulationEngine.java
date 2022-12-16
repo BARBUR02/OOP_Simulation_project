@@ -15,11 +15,13 @@ public class SimulationEngine implements ISimulationEngine {
     private int maximalMutationCount;
     private int animalGenomeLentgh;
 
+    private int healthyAnimalThreshhold;
     private IMap map;
 
     public SimulationEngine(int height, int width, int startingGrassCount,
                             int startingAnimalCount, int energyViaGrass,
                             int dailyGrassGrowth, int startingAnimalEnergy,
+                            int healthyAnimalThreshhold,
                             int reproductionEnergyCost, int minimalMutationCount,
                             int maximalMutationCount, int animalGenomeLentgh) {
         this.startingGrassCount = startingGrassCount;
@@ -27,13 +29,14 @@ public class SimulationEngine implements ISimulationEngine {
         this.energyViaGrass = energyViaGrass;
         this.dailyGrassGrowth = dailyGrassGrowth;
         this.startingAnimalEnergy = startingAnimalEnergy;
+        this.healthyAnimalThreshhold=healthyAnimalThreshhold;
         this.reproductionEnergyCost = reproductionEnergyCost;
         this.minimalMutationCount = minimalMutationCount;
         this.maximalMutationCount = maximalMutationCount;
         this.animalGenomeLentgh = animalGenomeLentgh;
         this.map = new GrassField(width, height ,startingGrassCount,animalGenomeLentgh
-        ,startingAnimalCount, startingAnimalEnergy, reproductionEnergyCost,
-                energyViaGrass,dailyGrassGrowth);
+        ,startingAnimalCount, startingAnimalEnergy,healthyAnimalThreshhold ,reproductionEnergyCost,
+                energyViaGrass,dailyGrassGrowth, this.minimalMutationCount,this.maximalMutationCount);
     }
 
 

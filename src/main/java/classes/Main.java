@@ -9,9 +9,9 @@ public class Main {
 
         SimulationEngine engine = new SimulationEngine(
                 7,7,6,
-                14,3,3,
-                4,2,1,
-                3,4);
+                17,3,3,
+                4,3,2,1,
+                3,7);
         engine.run();
         // staring parameters
 //        int height, int width, int startingGrassCount,

@@ -12,7 +12,8 @@ public class GrassField extends AbstractMap {
 
 
     public GrassField(int width, int height, int grassNum, int genomeLength, int animalNum,
-                      int startingEnergy, int reproductionEnergy, int energyBoost, int dailyGrass) {
+                      int startingEnergy, int healthyAnimalThreshhold,int reproductionEnergy, int energyBoost, int dailyGrass,
+                      int minimalMutationCount, int maximalMutationCount) {
         this.day = 0;
         this.width = width;
         this.height = height;
@@ -20,7 +21,11 @@ public class GrassField extends AbstractMap {
         this.genomeLength = genomeLength;
         this.dailyGrass = dailyGrass;
         this.startingEnergy = startingEnergy;
+        this.healthyAnimalThreshhold=healthyAnimalThreshhold;
         this.reproductionEnergyThreshhold = reproductionEnergy;
+        this.minimalMutationChangesNum=minimalMutationCount;
+        this.maximalMutationChangesNum=maximalMutationCount;
+
         this.initBushes(grassNum);
 //        for (Vector2d pos : bushes.keySet()) {
 //            System.out.println(pos);
