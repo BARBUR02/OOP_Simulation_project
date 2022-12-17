@@ -6,7 +6,6 @@ import java.util.TreeSet;
 public class Main {
     public static void main(String[] args) {
 
-
         SimulationEngine engine = new SimulationEngine(
                 7,7,6,
                 14,3,3,
