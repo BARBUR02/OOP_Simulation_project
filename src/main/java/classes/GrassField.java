@@ -36,8 +36,8 @@ public class GrassField extends AbstractMap{
 
     private void initFreeFields(){
         List<Vector2d> temp = new LinkedList<>();
-        for (int i=0; i<height; i++){
-            for (int j=0; j<width; j++){
+        for (int i=0; i<=height; i++){
+            for (int j=0; j<=width; j++){
                 temp.add(new Vector2d(i,j));
             }
         }
