@@ -5,10 +5,10 @@ import java.util.*;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class GrassField extends AbstractMap implements IKillAnimalObserver{
+public class GrassField extends AbstractMap{
 
     //Fields sorted by likelihood of growing grass on them
-    private List<Vector2d> freeFields = new LinkedList<>();
+    private PriorityQueue<Vector2d> freeFields = new PriorityQueue<>(this::comp);
     //map to store deaths on every field
     private Map<Vector2d, Integer> deadsOnFields = new HashMap<>();
 
@@ -35,15 +35,17 @@ public class GrassField extends AbstractMap implements IKillAnimalObserver{
     }
 
     private void initFreeFields(){
+        List<Vector2d> temp = new LinkedList<>();
         for (int i=0; i<height; i++){
             for (int j=0; j<width; j++){
-                freeFields.add(new Vector2d(i,j));
+                temp.add(new Vector2d(i,j));
             }
         }
         for (Vector2d vec: bushes.keySet()){
-            freeFields.remove(vec);
+            temp.remove(vec);
         }
-        Collections.shuffle(freeFields);
+        Collections.shuffle(temp);
+        this.freeFields.addAll(temp);
     }
 
     public int comp(Vector2d a,Vector2d b){
@@ -68,14 +70,12 @@ public class GrassField extends AbstractMap implements IKillAnimalObserver{
         deadsOnFields.forEach((key, value)
                 -> System.out.print(key +" "+ value+" "));
         System.out.println();
-        freeFields.forEach(System.out::print);
+        freeFields.forEach(System.out::println);
         for (int i = 0; i < bushNum; i++) {
-            if (this.bushes.size() == width * height) {
+            Vector2d newPos = freeFields.poll();
+            if (newPos == null){
                 break;
             }
-            freeFields.sort(this::comp);
-            Vector2d newPos = freeFields.get(0);
-            freeFields.remove(0);
             this.bushes.put(newPos, new Grass(newPos));
         }
     }
@@ -112,8 +112,6 @@ public class GrassField extends AbstractMap implements IKillAnimalObserver{
             deadsOnFields.remove(animal.getPosition());
             deadsOnFields.put(animal.getPosition(), currentCount);
         }
-        this.freeFields.remove(animal.getPosition());
-        this.freeFields.add(animal.getPosition());
     }
 
     public void manageEating() {

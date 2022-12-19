@@ -47,8 +47,6 @@ public class Animal {
 
     private IMap map;
 
-    private LinkedList<IKillAnimalObserver> observers = new LinkedList<>();
-
     public int[] getGenome() {
         return genome;
     }
@@ -60,7 +58,6 @@ public class Animal {
         this.position=position;
         this.orient = GenomeModifier.randomOrient();
         this.map=map;
-        this.observers.add((IKillAnimalObserver) map);
         this.age=0;
         this.childCount=0;
     }
