@@ -72,10 +72,10 @@ public class GrassField extends AbstractMap{
 
     @Override
     public void renderGrass(int bushNum) {
-        deadsOnFields.forEach((key, value)
-                -> System.out.print(key +" "+ value+" "));
-        System.out.println();
-        freeFields.forEach(System.out::println);
+//        deadsOnFields.forEach((key, value)
+//                -> System.out.print(key +" "+ value+" "));
+//        System.out.println();
+//        freeFields.forEach(System.out::println);
         for (int i = 0; i < bushNum; i++) {
             Vector2d newPos = freeFields.poll();
             if (newPos == null){
@@ -105,8 +105,9 @@ public class GrassField extends AbstractMap{
         animal.setPosition(newPos);
     }
 
-
+    @Override
     public void killAnimal(Animal animal) {
+        super.killAnimal(animal);
         Integer currentCount = this.deadsOnFields.get(animal.getPosition());
         if (currentCount == null) {
             this.deadsOnFields.put(animal.getPosition(),1);

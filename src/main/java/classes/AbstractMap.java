@@ -134,6 +134,12 @@ public abstract class AbstractMap implements IMap {
         }
     }
 
+    public void killAnimal(Animal animal) {
+        animals.remove(animal);
+        SortedSet<Animal> anim = currAnimalPos.get(animal.getPosition());
+        anim.remove(animal);
+    }
+
     @Override
     public void manageDead() {
         LinkedList<Animal> toRemove = new LinkedList<>();
@@ -144,7 +150,7 @@ public abstract class AbstractMap implements IMap {
         }
 
         for (Animal animal : toRemove) {
-            animals.remove(animal);
+            killAnimal(animal);
             System.out.println("ANIMAL DEAD!");
         }
     }
