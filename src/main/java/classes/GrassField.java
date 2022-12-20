@@ -105,9 +105,8 @@ public class GrassField extends AbstractMap{
         animal.setPosition(newPos);
     }
 
-    @Override
+
     public void killAnimal(Animal animal) {
-        super.killAnimal(animal);
         Integer currentCount = this.deadsOnFields.get(animal.getPosition());
         if (currentCount == null) {
             this.deadsOnFields.put(animal.getPosition(),1);
