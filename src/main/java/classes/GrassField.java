@@ -8,7 +8,7 @@ import static java.lang.Math.min;
 public class GrassField extends AbstractMap{
 
     //Fields sorted by likelihood of growing grass on them
-    private PriorityQueue<Vector2d> freeFields = new PriorityQueue<>(this::comp);
+    private LinkedList<Vector2d> freeFields = new LinkedList<>();
     //map to store deaths on every field
     private Map<Vector2d, Integer> deadsOnFields = new HashMap<>();
 
@@ -40,17 +40,15 @@ public class GrassField extends AbstractMap{
     }
 
     private void initFreeFields(){
-        List<Vector2d> temp = new LinkedList<>();
         for (int i=0; i<=height; i++){
             for (int j=0; j<=width; j++){
-                temp.add(new Vector2d(i,j));
+                freeFields.add(new Vector2d(i,j));
             }
         }
         for (Vector2d vec: bushes.keySet()){
-            temp.remove(vec);
+            freeFields.remove(vec);
         }
-        Collections.shuffle(temp);
-        this.freeFields.addAll(temp);
+        Collections.shuffle(freeFields);
     }
 
     public int comp(Vector2d a,Vector2d b){
@@ -67,7 +65,7 @@ public class GrassField extends AbstractMap{
         }
         else {
             return 0;
-    }
+        }
     }
 
     @Override
@@ -77,11 +75,21 @@ public class GrassField extends AbstractMap{
 //        System.out.println();
 //        freeFields.forEach(System.out::println);
         for (int i = 0; i < bushNum; i++) {
-            Vector2d newPos = freeFields.poll();
-            if (newPos == null){
-                break;
+            try {
+                Random rand = new Random();
+                Vector2d newPos;
+                if (rand.nextInt(0,100)<80){
+                    newPos = Collections.min(freeFields, this::comp);
+                }
+                else {
+                    newPos = Collections.max(freeFields, this::comp);
+                }
+                this.bushes.put(newPos, new Grass(newPos));
+                freeFields.remove(newPos);
             }
-            this.bushes.put(newPos, new Grass(newPos));
+            catch (NoSuchElementException a){
+                return;
+            }
         }
     }
 
