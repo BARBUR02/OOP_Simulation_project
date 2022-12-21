@@ -75,7 +75,7 @@ public class GenomeModifier {
 
     // function creating child genome based od calculated proportion
     // and parent genomes (stronger as first param/ weaker as following)
-    public static int[] fuseGenoms(int[] stronger, int[] weaker, float proportion) {
+    public static int[] fuseGenoms(int[] stronger, int[] weaker, double proportion) {
         int genomeLength = stronger.length;
         int greaterNum = (int) (proportion * genomeLength);
         int[] resultGenome = new int[genomeLength];
