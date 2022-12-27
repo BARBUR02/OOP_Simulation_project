@@ -43,6 +43,7 @@ public class Animal {
     private int energy;
     public int[] genome;
 //    private int[] genome;
+    private int healthyThreshold;
     private int currentGenomeIndex;
 
     private IMap map;
@@ -52,7 +53,7 @@ public class Animal {
     }
 
     // n is length of genome /constructing first Animals
-    public Animal(int n, IMap map, int energy, Vector2d position){
+    public Animal(int n, IMap map, int energy, Vector2d position,int healthyThreshold){
         this.genome= GenomeModifier.createGenome(n);
         this.energy=energy;
         this.position=position;
@@ -60,10 +61,15 @@ public class Animal {
         this.map=map;
         this.age=0;
         this.childCount=0;
+        this.healthyThreshold=healthyThreshold;
     }
 
-//    constructor when we have array of genes
-    public Animal(int[] genes, IMap map, int energy, Vector2d position){
+    public int getHealthyThreshold() {
+        return healthyThreshold;
+    }
+
+    //    constructor when we have array of genes
+    public Animal(int[] genes, IMap map, int energy, Vector2d position, int healthyThreshold){
         this.map = map;
         this.genome=genes;
         this.energy=energy;
@@ -71,6 +77,7 @@ public class Animal {
         this.childCount=0;
         this.age=0;
         this.orient = GenomeModifier.randomOrient();
+        this.healthyThreshold=healthyThreshold;
     }
 
     public boolean isAt(Vector2d position) {

@@ -50,7 +50,8 @@ public abstract class AbstractMap implements IMap {
     public void initAnimals(int animalNum) {
         for (int i = 0; i < animalNum; i++) {
             Vector2d newPos = this.randomVectorGenerator();
-            this.animals.add(new Animal(this.genomeLength, this, this.startingEnergy, newPos));
+//            System.out.println("Initing animals with starting energu of :"+this.startingEnergy);
+            this.animals.add(new Animal(this.genomeLength, this, this.startingEnergy, newPos, this.healthyAnimalThreshhold));
         }
     }
 
@@ -131,6 +132,7 @@ public abstract class AbstractMap implements IMap {
     public void manageAnimalMoves() {
         for (Animal animal : this.animals) {
             animal.move();
+//            System.out.println("Energia zwierzaka : " + animal.getEnergy());
         }
     }
 
@@ -151,7 +153,7 @@ public abstract class AbstractMap implements IMap {
 
         for (Animal animal : toRemove) {
             killAnimal(animal);
-            System.out.println("ANIMAL DEAD!");
+//            System.out.println("ANIMAL DEAD!");
         }
     }
 
@@ -168,7 +170,7 @@ public abstract class AbstractMap implements IMap {
             if (bush != null) {
                 eater.setEnergy(eater.getEnergy() + bushEnergyBoost);
                 this.bushes.remove(bush.getPosition());
-                System.out.println("BUSH EATEN!");
+//                System.out.println("BUSH EATEN!");
             }
         }
     }
@@ -198,9 +200,9 @@ public abstract class AbstractMap implements IMap {
             weakerAnimal.setChildCount(weakerAnimal.getChildCount() + 1);
             int[] childGenome = GenomeModifier.fuseGenoms(strongerGenome, weakerGenome, proportion);
             childGenome=GenomeModifier.mutateGenome(childGenome,minimalMutationChangesNum,maximalMutationChangesNum);
-            System.out.println("ANIMAL CREATED!");
+//            System.out.println("ANIMAL CREATED!");
 //            this.animals.add(new Animal(childGenome, (GrassField) this, startingEnergy, position));
-            this.place(new Animal(childGenome,  this, 2*reproductionEnergyThreshhold, position),position);
+            this.place(new Animal(childGenome,  this, 2*reproductionEnergyThreshhold, position,this.healthyAnimalThreshhold),position);
         }
     }
 

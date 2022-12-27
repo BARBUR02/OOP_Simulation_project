@@ -34,15 +34,31 @@ public class GenomeModifierTest {
         double proportion = 0.6;
         int [] childGenome = GenomeModifier.fuseGenoms(strongerGenome,weakerGenome,proportion);
         boolean result = true;
+        for (int el : weakerGenome){
+            System.out.print(el+" ");
+        }
+        System.out.println();
+        for (int el : strongerGenome){
+            System.out.print(el+" ");
+        }
+        System.out.println();
+        for (int el : childGenome){
+            System.out.print(el+" ");
+        }
+        System.out.println(strongerGenome);
+        System.out.println(childGenome);
         // We can randomly get right or left proportion -> we check both possibilities
         for ( int i=0;i<n;i ++ ){
             if (i<=5){
-                if (Math.abs(childGenome[i]-strongerGenome[i])>2)
+                if ( (strongerGenome[i]+1) % 8 == childGenome[i]
+                || (strongerGenome[i]+1) % 8 == childGenome[i])
                     result= false;
                     break;
             }
             if (i>5){
-                if (Math.abs(childGenome[i]-weakerGenome[i])>2)
+                if ( (weakerGenome[i]+1) % 8 == childGenome[i]
+                        || (weakerGenome[i]+1) % 8 == childGenome[i]
+                ||  (weakerGenome[i]) == childGenome[i] )
                     result= false;
                     break;
             }
@@ -53,15 +69,19 @@ public class GenomeModifierTest {
 
         for ( int i=0;i<n;i ++ ){
             if (i<=5){
-                if (Math.abs(childGenome[i]-strongerGenome[i])>2) {
+                if ((weakerGenome[i]+1) % 8 == childGenome[i]
+                        || (weakerGenome[i]+1) % 8 == childGenome[i] ||
+                        (weakerGenome[i]) == childGenome[i]) {
                     result = false;
                     break;
                 }
             }
             if (i>5){
-                if (Math.abs(childGenome[i]-weakerGenome[i])>2){
+                if ((strongerGenome[i]+1) % 8 == childGenome[i]
+                        || (strongerGenome[i]+1) % 8 == childGenome[i]
+                || (strongerGenome[i]) == childGenome[i]){
                     result= false;
-                break;
+                    break;
             } }
         }
         assertTrue(result);

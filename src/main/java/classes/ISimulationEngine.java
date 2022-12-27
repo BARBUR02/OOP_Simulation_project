@@ -5,4 +5,6 @@ public interface ISimulationEngine {
     // we should implement run method in way fitting new requirements
     // This method specifies chain of actions that hold the simulation
     void run();
+
+    AbstractMap getMap();
 }
