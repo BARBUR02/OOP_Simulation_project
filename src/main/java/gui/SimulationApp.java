@@ -17,13 +17,13 @@ public class SimulationApp {
 
     private AbstractMap map;
     private boolean runningState=false;
-//    private SimulationEngine engine;
+    private SimulationEngine engine;
     private Thread thread;
     private SimulationViewController simulationController;
     public void createApp(Stage primStage, ConfigObject config) throws IOException, InterruptedException {
 //        this.engine.run();
         FXMLLoader fxmlLoader= new FXMLLoader(getClass().getResource("/SimulationView.fxml"));
-        SimulationEngine engine = new SimulationEngine(this,config);
+        engine = new SimulationEngine(this,config);
         Scene scene = new Scene(fxmlLoader.load());
         primStage.setTitle("Simulation window");
         primStage.setResizable(false);
@@ -31,17 +31,19 @@ public class SimulationApp {
 //        primStage.setScene(scene);
         simulationController = fxmlLoader.getController();
         simulationController.setMap(engine.getMap());
+        simulationController.setEngine(engine);
 
 //        System.out.println("Wywolanie showinfo w SimulationApp: ");
 //        simulationController.showInfo();
-        thread = new Thread(engine);
+//        thread = new Thread(engine);
 //        thread.setDaemon(true);
-        thread.start();
-        runningState=true;
+//        thread.start();
+        startThread();
         primStage.show();
         primStage.setOnCloseRequest(event -> {
             System.out.println("Stage is closing");
 //            thread.interrupt();
+            engine.stopThread();
 //            System.exit(0);
             // Save file
         });
@@ -62,6 +64,11 @@ public class SimulationApp {
 
     }
 
+    public void startThread(){
+        thread = new Thread(engine);
+//        thread.setDaemon(true);
+        thread.start();
+    }
 
     public void refreshDay(){
             simulationController.rePaint();

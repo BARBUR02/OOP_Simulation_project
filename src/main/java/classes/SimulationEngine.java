@@ -24,7 +24,7 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
     private int healthyAnimalThreshhold;
     private AbstractMap map;
 
-
+    private boolean running = false;
     private SimulationApp observer;
 
     public AbstractMap getMap() {
@@ -44,6 +44,7 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
         this.maximalMutationCount = config.getMaximalMutationCount();
         this.animalGenomeLentgh = config.getAnimalGenomeLength();
         this.moveDelay=config.getMoveDelay();
+        this.running=true;
         this.map = new GrassField(config.getMapWidth(), config.getMapHeight(),
                 this.startingGrassCount,this.animalGenomeLentgh
         ,this.startingAnimalCount, this.startingAnimalEnergy,this.healthyAnimalThreshhold ,this.reproductionEnergyCost,
@@ -56,9 +57,9 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
     @Override
     public void run(){
 //        int i=0;
-        while(true) {
+        while(this.running) {
 
-//            System.out.println("Mamy dzien: "+this.map.getDay());
+            System.out.println("Mamy dzien: "+this.map.getDay());
             this.map.manageDead();
             this.map.clearDayInfo();
             this.map.manageAnimalMoves();
@@ -93,8 +94,17 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
 //            this.map.setDay(this.map.getDay()+1);
 //            i++;
         }
+
+
+    }
+    public void stopThread(){
+        running=false;
     }
 
+    public void rerunThread(){
+        running=true;
+        this.observer.startThread();
+    }
 
 
 }

@@ -59,7 +59,9 @@ public class SimulationViewController {
     }
 
 
-
+    public void setEngine(SimulationEngine engine){
+        this.engine=engine;
+    }
 
     public void fillGridWithData(){
 //        simulationGrid.getChildren().clear();
@@ -122,7 +124,7 @@ public class SimulationViewController {
                     int numOfBrightening = threshold<=energy ? 0 : (int) ( ((double)energy/(double)threshold)*10) ;
 //                    System.out.println((int) ((energy/threshold)*10) );
 //                    System.out.println((int) ((energy/threshold)*100 ));
-                    System.out.println("Energy :"+ energy + "Threshold :" +threshold + "proportion: "+numOfBrightening );
+//                    System.out.println("Energy :"+ energy + "Threshold :" +threshold + "proportion: "+numOfBrightening );
                     Color color = switch (numOfBrightening){
                         case 0 -> Color.DARKORANGE;
                         case 1,2,3 -> Color.LIGHTYELLOW;
@@ -188,6 +190,18 @@ public class SimulationViewController {
 
     public void threadAction(){
         System.out.println("Klikniety start/stop");
+        System.out.println(this.threadBtn.getText());
+        if (this.threadBtn.getText().equals("Stop")){
+            System.out.println("STOPPING");
+            this.threadBtn.setText("Start");
+            engine.stopThread();
+        }
+        else {
+            this.threadBtn.setText("Stop");
+            System.out.println("Rerunning!!!");
+            engine.rerunThread();
+        }
+
     }
 
 
