@@ -69,6 +69,10 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
             try{
                 Thread.sleep(this.moveDelay);
             } catch (InterruptedException e){
+//                Thread.dumpStack();
+//                Thread.interrupted();
+//                Thread.currentThread().interrupt();
+                System.out.println("We interrupted the thread!");
                 e.printStackTrace();
             }
 
@@ -90,4 +94,7 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
 //            i++;
         }
     }
+
+
+
 }

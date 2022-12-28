@@ -16,8 +16,9 @@ import java.util.Timer;
 public class SimulationApp {
 
     private AbstractMap map;
+    private boolean runningState=false;
 //    private SimulationEngine engine;
-
+    private Thread thread;
     private SimulationViewController simulationController;
     public void createApp(Stage primStage, ConfigObject config) throws IOException, InterruptedException {
 //        this.engine.run();
@@ -33,9 +34,17 @@ public class SimulationApp {
 
 //        System.out.println("Wywolanie showinfo w SimulationApp: ");
 //        simulationController.showInfo();
-        Thread thread = new Thread(engine);
+        thread = new Thread(engine);
+//        thread.setDaemon(true);
         thread.start();
+        runningState=true;
         primStage.show();
+        primStage.setOnCloseRequest(event -> {
+            System.out.println("Stage is closing");
+//            thread.interrupt();
+//            System.exit(0);
+            // Save file
+        });
 //        Timer timer = new Timer();
 //        try {
 //            timer.wait(2000);
@@ -52,6 +61,7 @@ public class SimulationApp {
 //        simulationController.paintGrid();
 
     }
+
 
     public void refreshDay(){
             simulationController.rePaint();

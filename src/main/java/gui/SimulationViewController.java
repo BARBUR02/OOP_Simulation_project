@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -26,6 +27,26 @@ import java.util.SortedSet;
 public class SimulationViewController {
     @FXML
     private AnchorPane gridPlace;
+
+
+    @FXML
+    private Label animalCountLabel;
+
+    @FXML
+    private Label grassCountLabel;
+    @FXML
+    private Label freeFieldsCountLabel;
+
+    @FXML
+    private Label mostPopularGonetypeLabel;
+
+    @FXML
+    private Label averageLifeLengthLabel;
+
+    @FXML
+    private Label averageEnergyLabel;
+    @FXML
+    private Button threadBtn;
     private GridPane simulationGrid= new GridPane();
 
     private SimulationEngine engine;
@@ -47,6 +68,8 @@ public class SimulationViewController {
 //        simulationGrid.getRowConstraints().clear();
 //
 //
+        this.animalCountLabel.setText(""+this.map.getAnimalsCount());
+        this.grassCountLabel.setText(""+this.map.getGrassCount());
         int mapHeight = this.map.getRightUp().y+1;
         int mapWidth = this.map.getRightUp().x+1;
 
@@ -74,7 +97,7 @@ public class SimulationViewController {
             for ( int j=0; j<mapHeight;j++){
                 if (this.map.grassAt(new Vector2d(i,j)) ==null){
                     Rectangle rect =new Rectangle(singleCellWidth,singleCellHeight);
-//                    rect.setStroke(Color.GREEN);
+                    rect.setStroke(Color.GREENYELLOW);
                     rect.setFill(Color.GREENYELLOW);
                     simulationGrid.add(rect,i,mapHeight-j-1);
                     GridPane.setHalignment(rect, HPos.CENTER);
@@ -83,7 +106,7 @@ public class SimulationViewController {
 //                    System.out.println("Trawa na pozycji : "+new Vector2d(i,j)+" Indeksy :"
 //                            +i+" "+ j);
                     Rectangle rect =new Rectangle(singleCellWidth,singleCellHeight);
-//                    rect.setStroke(Color.GREEN);
+                    rect.setStroke(Color.GREEN);
                     rect.setFill(Color.GREEN);
                     simulationGrid.add(rect,i,mapHeight-j-1);
                     GridPane.setHalignment(rect, HPos.CENTER);
@@ -100,12 +123,13 @@ public class SimulationViewController {
 //                    System.out.println((int) ((energy/threshold)*10) );
 //                    System.out.println((int) ((energy/threshold)*100 ));
                     System.out.println("Energy :"+ energy + "Threshold :" +threshold + "proportion: "+numOfBrightening );
-                    Color color = Color.ORANGERED;
-                    for (int z=0;i<numOfBrightening;z++){
-                        color=color.brighter();
-                        if (z==3) break;
-//                        System.out.println("Brither :" + color);
-                    }
+                    Color color = switch (numOfBrightening){
+                        case 0 -> Color.DARKORANGE;
+                        case 1,2,3 -> Color.LIGHTYELLOW;
+                        case 4,5,6 -> Color.YELLOW;
+                        case 7,8 -> Color.ORANGE.brighter();
+                        default -> Color.ORANGERED;
+                    };
                     circle.setFill(color);
                     simulationGrid.add(circle,i,mapHeight-j-1);
                     GridPane.setHalignment(circle, HPos.CENTER);
@@ -160,7 +184,13 @@ public class SimulationViewController {
 //            System.out.println(this.simulationGrid);
 //            System.out.println("Zakonczylismy edytowac grida w controllerze!");
         });
-        }
+    }
+
+    public void threadAction(){
+        System.out.println("Klikniety start/stop");
+    }
+
+
 
 }
 
