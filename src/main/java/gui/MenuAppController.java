@@ -42,6 +42,9 @@ public class MenuAppController {
     }
 
     public ConfigObject getConfig(){
+        if (Integer.parseInt(mapHeight.getText()) <= 0){
+            throw new IllegalArgumentException();
+        }
         ConfigObject config = new ConfigObject(
                     Integer.parseInt(mapWidth.getText()),
                     Integer.parseInt(mapHeight.getText()),
