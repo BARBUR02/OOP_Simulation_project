@@ -27,6 +27,8 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
     private boolean running = false;
     private SimulationApp observer;
 
+    private Statistics statistics;
+
     public AbstractMap getMap() {
         return map;
     }
@@ -45,10 +47,13 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
         this.animalGenomeLentgh = config.getAnimalGenomeLength();
         this.moveDelay=config.getMoveDelay();
         this.running=true;
+        this.width = config.getMapWidth();
+        this.height = config.getMapHeight();
+        this.statistics = new Statistics(animalGenomeLentgh);
         this.map = new GrassField(config.getMapWidth(), config.getMapHeight(),
                 this.startingGrassCount,this.animalGenomeLentgh
         ,this.startingAnimalCount, this.startingAnimalEnergy,this.healthyAnimalThreshhold ,this.reproductionEnergyCost,
-                this.energyViaGrass,this.dailyGrassGrowth, this.minimalMutationCount,this.maximalMutationCount);
+                this.energyViaGrass,this.dailyGrassGrowth, this.minimalMutationCount,this.maximalMutationCount,this.statistics);
     }
 
 
@@ -60,12 +65,20 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
         while(this.running) {
 
             System.out.println("Mamy dzien: "+this.map.getDay());
-            this.map.manageDead();
+            this.map.manageDead(statistics);
             this.map.clearDayInfo();
             this.map.manageAnimalMoves();
             this.map.manageEating();
             this.map.manageReproduction();
             this.map.renderGrass(dailyGrassGrowth);
+            this.map.day++;
+
+            this.statistics.updateCurrAnimalCount(map.animals.size());
+            this.statistics.updateCurrGrassCount(map.getGrassCount());
+            this.statistics.updateCurrFreeFieldsCount(this.height*this.width-map.getGrassCount());
+            this.statistics.updateMostPopularGenome(map.animals);
+            this.statistics.updateAverageEnergy(map.animals);
+            this.statistics.updateCSVFile();
 
             try{
                 Thread.sleep(this.moveDelay);

@@ -39,6 +39,10 @@ public class Animal {
     }
 
     private int age;
+
+    public Integer deathDay = null;
+
+    public int grassCount = 0;
     public int orient;
     private int energy;
     public int[] genome;

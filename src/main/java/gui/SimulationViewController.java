@@ -72,6 +72,10 @@ public class SimulationViewController {
 //
         this.animalCountLabel.setText(""+this.map.getAnimalsCount());
         this.grassCountLabel.setText(""+this.map.getGrassCount());
+        this.freeFieldsCountLabel.setText(""+this.map.getStatistics().getCurrFreeFieldsCount());
+//        this.mostPopularGonetypeLabel.setText(""+this.map.getStatistics().stringMostPopularGenome()); not working
+        this.averageEnergyLabel.setText(""+this.map.getStatistics().getAverageEnergy());
+        this.averageLifeLengthLabel.setText(""+this.map.getStatistics().getAverageLifeSpan());
         int mapHeight = this.map.getRightUp().y+1;
         int mapWidth = this.map.getRightUp().x+1;
 

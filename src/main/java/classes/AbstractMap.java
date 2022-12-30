@@ -20,6 +20,8 @@ public abstract class AbstractMap implements IMap {
     protected int minimalMutationChangesNum;
 
     protected int maximalMutationChangesNum;
+
+    protected Statistics statistics;
     // list of animals in the map (at current state)
     protected LinkedList<Animal> animals = new LinkedList<>();
 
@@ -43,7 +45,6 @@ public abstract class AbstractMap implements IMap {
             }
             this.bushes.put(newPos, new Grass(newPos));
         }
-
     }
 
     @Override
@@ -143,7 +144,7 @@ public abstract class AbstractMap implements IMap {
     }
 
     @Override
-    public void manageDead() {
+    public void manageDead(Statistics stats) {
         LinkedList<Animal> toRemove = new LinkedList<>();
         for (Animal animal : this.animals) {
             if (animal.getEnergy() <= 0) {
@@ -153,6 +154,7 @@ public abstract class AbstractMap implements IMap {
 
         for (Animal animal : toRemove) {
             killAnimal(animal);
+            stats.updateAverageLifeSpan(animal.getAge());
 //            System.out.println("ANIMAL DEAD!");
         }
     }
@@ -249,5 +251,9 @@ public abstract class AbstractMap implements IMap {
     @Override
     public String toString() {
         return new MapVisualizer(this).draw(getLeftBottom(), getRightUp());
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
     }
 }
