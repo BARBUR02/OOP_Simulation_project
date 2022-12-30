@@ -120,34 +120,34 @@ public class ConfigObject {
 
     public void validation(){
         if (mapHeight <= 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal height");
         }
         if (mapWidth <= 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal width");
         }
         if (startingAnimalCount < 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal number of animals");
         }
         if (startingGrassCount > mapWidth*mapHeight && startingGrassCount < 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal number of grass");
         }
         if (dailyNewGrass < 0 && dailyNewGrass > mapHeight*mapWidth){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal daily grass grow");
         }
         if (reproductionEnergyCost < 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal reporduction energy cost");
         }
         if (animalStartingEnergy <= 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal starting energy for animal");
         }
         if (minimalMutationCount < 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal minimum mutation count");
         }
         if (maximalMutationCount < minimalMutationCount){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal maximum mutation count");
         }
         if (animalGenomeLength <= 0){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal animal genome length");
         }
     }
 }
