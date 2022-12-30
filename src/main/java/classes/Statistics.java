@@ -111,7 +111,6 @@ public class Statistics {
     }
 
     public void updateAverageLifeSpan(float lifeSpan){
-        System.out.println(lifeSpan);
         averageLifeSpan = (numOfDeadAnimals*averageLifeSpan)/(numOfDeadAnimals+1) + (lifeSpan)/(numOfDeadAnimals+1);
         numOfDeadAnimals++;
     }
