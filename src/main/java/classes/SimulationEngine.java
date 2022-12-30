@@ -29,11 +29,14 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
 
     private Statistics statistics;
 
+    private boolean loadCSV;
+
     public AbstractMap getMap() {
         return map;
     }
 
     public SimulationEngine(SimulationApp observer, ConfigObject config) {
+        this.loadCSV= config.isCsvLoad();
         this.observer=observer;
         this.startingGrassCount = config.getStartingGrassCount();
         this.startingAnimalCount = config.getStartingAnimalCount();
@@ -49,7 +52,7 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
         this.running=true;
         this.width = config.getMapWidth();
         this.height = config.getMapHeight();
-        this.statistics = new Statistics(animalGenomeLentgh);
+        this.statistics =  new Statistics(animalGenomeLentgh, config.isCsvLoad());
         this.map = new GrassField(config.getMapWidth(), config.getMapHeight(),
                 this.startingGrassCount,this.animalGenomeLentgh
         ,this.startingAnimalCount, this.startingAnimalEnergy,this.healthyAnimalThreshhold ,this.reproductionEnergyCost,
@@ -78,7 +81,10 @@ public class SimulationEngine implements Runnable, ISimulationEngine {
             this.statistics.updateCurrFreeFieldsCount(this.height*this.width-map.getGrassCount());
             this.statistics.updateMostPopularGenome(map.animals);
             this.statistics.updateAverageEnergy(map.animals);
-            this.statistics.updateCSVFile();
+            if (loadCSV){
+                this.statistics.updateCSVFile();
+            }
+
 
             try{
                 Thread.sleep(this.moveDelay);

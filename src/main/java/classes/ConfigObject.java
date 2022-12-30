@@ -31,6 +31,8 @@ public class ConfigObject {
     private int animalGenomeLength;
 
     private int moveDelay;
+
+    private boolean csvLoad;
     public ConfigObject(int mapWidth,
                         int mapHeight,
                         int startingGrassCount,
@@ -41,7 +43,9 @@ public class ConfigObject {
                         int reproductionEnergyCost,
                         int animalStartingEnergy,
                         int minimalMutationCount,
-                        int maximalMutationCount, int animalGenomeLength, int moveDelay) {
+                        int maximalMutationCount, int animalGenomeLength, int moveDelay, boolean
+                        csvLoad) {
+        this.csvLoad=csvLoad;
         this.moveDelay=moveDelay;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
@@ -56,6 +60,10 @@ public class ConfigObject {
         this.maximalMutationCount = maximalMutationCount;
         this.animalGenomeLength = animalGenomeLength;
         validation();
+    }
+
+    public boolean isCsvLoad() {
+        return csvLoad;
     }
 
     public int getMoveDelay() {

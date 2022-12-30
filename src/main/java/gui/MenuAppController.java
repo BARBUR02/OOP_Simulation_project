@@ -3,6 +3,7 @@ package gui;
 import classes.ConfigObject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
 public class MenuAppController {
@@ -37,6 +38,10 @@ public class MenuAppController {
 
     @FXML
     private TextField moveDelay;
+
+    @FXML
+    private CheckBox saveCheckbox;
+
     public Button getStartBtn() {
         return startBtn;
     }
@@ -58,8 +63,10 @@ public class MenuAppController {
                     Integer.parseInt(minimalMutationCount.getText()),
                     Integer.parseInt(maximalMutationCount.getText()),
                     Integer.parseInt(animalGenomeLength.getText()),
-                Integer.parseInt(moveDelay.getText())
+                Integer.parseInt(moveDelay.getText()),
+                this.saveCheckbox.isSelected()
             );
+        System.out.println(this.saveCheckbox.isSelected());
         return config;
     }
 }

@@ -18,16 +18,19 @@ public class Statistics {
     private float averageLifeSpan = 0;
     private int numOfDeadAnimals = 0;
 
-    public Statistics(int genomeLength){
+    private boolean loadCSV;
+
+    public Statistics(int genomeLength, boolean loadCsv){
         this.genomeLength = genomeLength;
-        initCSVFile();
+        this.loadCSV=loadCsv;
+        if (this.loadCSV) initCSVFile();
     }
 
     private void initCSVFile(){
         int i = 0;
         File tmp;
         do {
-            this.path = "StatisticFiles/stats" + i + ".csv";
+            this.path = "stats" + i + ".csv";
             tmp = new File(path);
             i++;
         } while (tmp.exists());
