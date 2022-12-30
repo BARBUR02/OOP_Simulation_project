@@ -43,7 +43,7 @@ public class SimulationEngine implements ISimulationEngine {
 
     // controls each life cycle of map (each day)
     public void run(){
-        for (int i=0;i<50;i++) {
+        for (int i=0;i<5000;i++) {
             this.map.manageDead();
             this.map.clearDayInfo();
             this.map.manageAnimalMoves();

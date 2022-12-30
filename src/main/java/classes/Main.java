@@ -7,8 +7,8 @@ public class Main {
     public static void main(String[] args) {
 
         SimulationEngine engine = new SimulationEngine(
-                7,7,6,
-                17,3,3,
+                25,25,50,
+                40,3,20,
                 4,3,2,1,
                 3,7);
         engine.run();
