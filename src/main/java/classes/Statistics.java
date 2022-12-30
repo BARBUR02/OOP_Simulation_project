@@ -75,6 +75,9 @@ public class Statistics {
 
 
     public void updateMostPopularGenome(LinkedList<Animal> animals){
+        if (this.currAnimalCount==0) {
+            return;
+        }
         int[][] genomes = new int[this.currAnimalCount][this.genomeLength];
         int[] popularity = new int[this.currAnimalCount];
         for (Animal animal: animals){
