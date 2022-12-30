@@ -55,6 +55,7 @@ public class ConfigObject {
         this.minimalMutationCount = minimalMutationCount;
         this.maximalMutationCount = maximalMutationCount;
         this.animalGenomeLength = animalGenomeLength;
+        validation();
     }
 
     public int getMoveDelay() {
@@ -107,5 +108,38 @@ public class ConfigObject {
 
     public int getAnimalGenomeLength() {
         return animalGenomeLength;
+    }
+
+    public void validation(){
+        if (mapHeight <= 0){
+            throw new IllegalArgumentException();
+        }
+        if (mapWidth <= 0){
+            throw new IllegalArgumentException();
+        }
+        if (startingAnimalCount < 0){
+            throw new IllegalArgumentException();
+        }
+        if (startingGrassCount > mapWidth*mapHeight && startingGrassCount < 0){
+            throw new IllegalArgumentException();
+        }
+        if (dailyNewGrass < 0 && dailyNewGrass > mapHeight*mapWidth){
+            throw new IllegalArgumentException();
+        }
+        if (reproductionEnergyCost < 0){
+            throw new IllegalArgumentException();
+        }
+        if (animalStartingEnergy <= 0){
+            throw new IllegalArgumentException();
+        }
+        if (minimalMutationCount < 0){
+            throw new IllegalArgumentException();
+        }
+        if (maximalMutationCount < minimalMutationCount){
+            throw new IllegalArgumentException();
+        }
+        if (animalGenomeLength <= 0){
+            throw new IllegalArgumentException();
+        }
     }
 }
