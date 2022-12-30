@@ -23,11 +23,11 @@ public class GenomeModifier {
         if (maxTimes == 0) {
             return genome;
         }
-        System.out.println("Starting genome :");
-        for (int num : genome) {
-            System.out.print(num + " ");
-        }
-        System.out.print("\n");
+//        System.out.println("Starting genome :");
+//        for (int num : genome) {
+//            System.out.print(num + " ");
+//        }
+//        System.out.print("\n");
 
         int internalMutationNum = (maxTimes - minTimes);
         internalMutationNum = Math.min(internalMutationNum, genome.length);
@@ -36,11 +36,11 @@ public class GenomeModifier {
             int index=externalMutationIndexes[i];
             genome[index] = Math.random() < 0.5 ?( genome[index]==0 ? posCount-1 :(genome[index] - 1) ) : (genome[index] + 1)%posCount;
         }
-        System.out.println("\nMutated genome :");
-        for (int num : genome) {
-            System.out.print(num + " ");
-        }
-        System.out.print("\n");
+//        System.out.println("\nMutated genome :");
+//        for (int num : genome) {
+//            System.out.print(num + " ");
+//        }
+//        System.out.print("\n");
         return genome;
     }
 

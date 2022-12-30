@@ -46,7 +46,7 @@ public interface IMap {
     void manageAnimalMoves();
 
     // function clears map from dead animals in each day cycle
-    void manageDead();
+    void manageDead(Statistics stats);
 
     // function resolves conflicts (when more than 1 animal appears on
     // one position) and feeds chosen Animal (for all positions occupied by animal each day)

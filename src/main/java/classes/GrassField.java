@@ -15,7 +15,7 @@ public class GrassField extends AbstractMap{
 
     public GrassField(int width, int height, int grassNum, int genomeLength, int animalNum,
                       int startingEnergy, int healthyAnimalThreshhold,int reproductionEnergy, int energyBoost, int dailyGrass,
-                      int minimalMutationCount, int maximalMutationCount) {
+                      int minimalMutationCount, int maximalMutationCount, Statistics statistics) {
         this.day = 0;
         this.width = width;
         this.height = height;
@@ -27,6 +27,7 @@ public class GrassField extends AbstractMap{
         this.reproductionEnergyThreshhold = reproductionEnergy;
         this.minimalMutationChangesNum=minimalMutationCount;
         this.maximalMutationChangesNum=maximalMutationCount;
+        this.statistics = statistics;
 //        System.out.println("W mapie starting energy: "+this.startingEnergy);
         this.initBushes(grassNum);
         this.initFreeFields();
@@ -139,6 +140,7 @@ public class GrassField extends AbstractMap{
             Grass bush = this.grassAt(position);
             if (bush != null) {
                 eater.setEnergy(eater.getEnergy() + bushEnergyBoost);
+                eater.grassCount++;
                 this.bushes.remove(bush.getPosition());
                 this.freeFields.add(bush.getPosition());
 //                System.out.println("BUSH EATEN!");
