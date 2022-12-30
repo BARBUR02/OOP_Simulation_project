@@ -46,43 +46,53 @@ public class GenomeModifierTest {
             System.out.print(el+" ");
         }
         System.out.println(strongerGenome);
+        System.out.println(weakerGenome);
         System.out.println(childGenome);
         // We can randomly get right or left proportion -> we check both possibilities
         for ( int i=0;i<n;i ++ ){
             if (i<=5){
-                if ( (strongerGenome[i]+1) % 8 == childGenome[i]
-                || (strongerGenome[i]+1) % 8 == childGenome[i])
+                if ( !((strongerGenome[i]+1) % 8 == childGenome[i]
+                || strongerGenome[i] ==(childGenome[i]+1)%8 ||
+                        (strongerGenome[i]) == childGenome[i]) )
+                {
+                    System.out.println(i+ " silniejszy po lewej!");
                     result= false;
-                    break;
-            }
-            if (i>5){
-                if ( (weakerGenome[i]+1) % 8 == childGenome[i]
-                        || (weakerGenome[i]+1) % 8 == childGenome[i]
-                ||  (weakerGenome[i]) == childGenome[i] )
-                    result= false;
-                    break;
-            }
-            }
-        if (result == true){
-            assertTrue(result);
-        }
-
-        for ( int i=0;i<n;i ++ ){
-            if (i<=5){
-                if ((weakerGenome[i]+1) % 8 == childGenome[i]
-                        || (weakerGenome[i]+1) % 8 == childGenome[i] ||
-                        (weakerGenome[i]) == childGenome[i]) {
-                    result = false;
                     break;
                 }
             }
             if (i>5){
-                if ((strongerGenome[i]+1) % 8 == childGenome[i]
-                        || (strongerGenome[i]+1) % 8 == childGenome[i]
-                || (strongerGenome[i]) == childGenome[i]){
+                if ( !((weakerGenome[i]+1) % 8 == childGenome[i]
+                        || weakerGenome[i] == (childGenome[i]+1)%8
+                ||  (weakerGenome[i]) == childGenome[i] )) {
+                    System.out.println(i+ " silniejszy po lewej!");
                     result= false;
                     break;
-            } }
+                }
+
+            }
+        }
+        if (!result){
+        result=true;
+        for ( int i=0;i<n;i ++ ){
+            if (i<4){
+                if ( !((weakerGenome[i]+1) % 8 == childGenome[i]
+                        || weakerGenome[i] == (childGenome[i]+1)%8 ||
+                        weakerGenome[i] == childGenome[i]) ){
+                    System.out.println(i+ " silniejszy po prawej!");
+                    result = false;
+                    break;
+                }
+            }
+            if (i>=4){
+                if (!((strongerGenome[i]+1) % 8 == childGenome[i]
+                        || strongerGenome[i]== (childGenome[i]+1)%8
+                || (strongerGenome[i]) == childGenome[i]) ){
+                    System.out.println(i+ " silniejszy po lprawej!");
+                    result= false;
+                    break;
+            }
+            }
+            }
         }
         assertTrue(result);
     }
