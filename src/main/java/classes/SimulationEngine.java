@@ -1,6 +1,11 @@
 package classes;
 
-public class SimulationEngine implements ISimulationEngine {
+import gui.SimulationApp;
+import gui.SimulationViewController;
+
+import java.util.Timer;
+
+public class SimulationEngine implements Runnable, ISimulationEngine {
 
     //simulation statistics
     private int height;
@@ -15,45 +20,91 @@ public class SimulationEngine implements ISimulationEngine {
     private int maximalMutationCount;
     private int animalGenomeLentgh;
 
+    private int moveDelay;
     private int healthyAnimalThreshhold;
-    private IMap map;
+    private AbstractMap map;
 
-    public SimulationEngine(int height, int width, int startingGrassCount,
-                            int startingAnimalCount, int energyViaGrass,
-                            int dailyGrassGrowth, int startingAnimalEnergy,
-                            int healthyAnimalThreshhold,
-                            int reproductionEnergyCost, int minimalMutationCount,
-                            int maximalMutationCount, int animalGenomeLentgh) {
-        this.startingGrassCount = startingGrassCount;
-        this.startingAnimalCount = startingAnimalCount;
-        this.energyViaGrass = energyViaGrass;
-        this.dailyGrassGrowth = dailyGrassGrowth;
-        this.startingAnimalEnergy = startingAnimalEnergy;
-        this.healthyAnimalThreshhold=healthyAnimalThreshhold;
-        this.reproductionEnergyCost = reproductionEnergyCost;
-        this.minimalMutationCount = minimalMutationCount;
-        this.maximalMutationCount = maximalMutationCount;
-        this.animalGenomeLentgh = animalGenomeLentgh;
-        this.map = new GrassField(width, height ,startingGrassCount,animalGenomeLentgh
-        ,startingAnimalCount, startingAnimalEnergy,healthyAnimalThreshhold ,reproductionEnergyCost,
-                energyViaGrass,dailyGrassGrowth, this.minimalMutationCount,this.maximalMutationCount);
+    private boolean running = false;
+    private SimulationApp observer;
+
+    public AbstractMap getMap() {
+        return map;
+    }
+
+    public SimulationEngine(SimulationApp observer, ConfigObject config) {
+        this.observer=observer;
+        this.startingGrassCount = config.getStartingGrassCount();
+        this.startingAnimalCount = config.getStartingAnimalCount();
+        this.energyViaGrass = config.getGrassEnergyBoost();
+        this.dailyGrassGrowth = config.getDailyNewGrass();
+        this.startingAnimalEnergy = config.getAnimalStartingEnergy();
+        this.healthyAnimalThreshhold=config.getHealthyAnimalThreshold();
+        this.reproductionEnergyCost = config.getReproductionEnergyCost();
+        this.minimalMutationCount = config.getMinimalMutationCount();
+        this.maximalMutationCount = config.getMaximalMutationCount();
+        this.animalGenomeLentgh = config.getAnimalGenomeLength();
+        this.moveDelay=config.getMoveDelay();
+        this.running=true;
+        this.map = new GrassField(config.getMapWidth(), config.getMapHeight(),
+                this.startingGrassCount,this.animalGenomeLentgh
+        ,this.startingAnimalCount, this.startingAnimalEnergy,this.healthyAnimalThreshhold ,this.reproductionEnergyCost,
+                this.energyViaGrass,this.dailyGrassGrowth, this.minimalMutationCount,this.maximalMutationCount);
     }
 
 
 
     // controls each life cycle of map (each day)
+    @Override
     public void run(){
-        for (int i=0;i<5000;i++) {
+//        int i=0;
+        while(this.running) {
+
+            System.out.println("Mamy dzien: "+this.map.getDay());
             this.map.manageDead();
             this.map.clearDayInfo();
             this.map.manageAnimalMoves();
             this.map.manageEating();
             this.map.manageReproduction();
             this.map.renderGrass(dailyGrassGrowth);
-            System.out.println(this.map);
-            System.out.println("||| We got num of Animals: "+this.map.getAnimalsCount());
-            System.out.println("||| We got num of Bushes: "+this.map.getGrassCount()+"\n\n");
-            this.map.setDay(this.map.getDay()+1);
+
+            try{
+                Thread.sleep(this.moveDelay);
+            } catch (InterruptedException e){
+//                Thread.dumpStack();
+//                Thread.interrupted();
+//                Thread.currentThread().interrupt();
+                System.out.println("We interrupted the thread!");
+                e.printStackTrace();
+            }
+
+            this.observer.refreshDay();
+
+//
+//            try {
+//                timer.wait(500);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+
+
+//            System.out.println(this.map);
+//            System.out.println("||| We got num of Animals: "+this.map.getAnimalsCount());
+//            System.out.println("||| We got num of Bushes: "+this.map.getGrassCount()+"\n\n");
+//            if (i>=28) System.out.println(this.map);
+//            this.map.setDay(this.map.getDay()+1);
+//            i++;
         }
+
+
     }
+    public void stopThread(){
+        running=false;
+    }
+
+    public void rerunThread(){
+        running=true;
+        this.observer.startThread();
+    }
+
+
 }

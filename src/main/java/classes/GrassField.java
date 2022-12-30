@@ -27,7 +27,7 @@ public class GrassField extends AbstractMap{
         this.reproductionEnergyThreshhold = reproductionEnergy;
         this.minimalMutationChangesNum=minimalMutationCount;
         this.maximalMutationChangesNum=maximalMutationCount;
-
+//        System.out.println("W mapie starting energy: "+this.startingEnergy);
         this.initBushes(grassNum);
         this.initFreeFields();
 //        for (Vector2d pos : bushes.keySet()) {
@@ -127,6 +127,7 @@ public class GrassField extends AbstractMap{
         }
     }
 
+    @Override
     public void manageEating() {
         for (Vector2d position : currAnimalPos.keySet()) {
             // Set should never be empty due to the fact
@@ -140,7 +141,7 @@ public class GrassField extends AbstractMap{
                 eater.setEnergy(eater.getEnergy() + bushEnergyBoost);
                 this.bushes.remove(bush.getPosition());
                 this.freeFields.add(bush.getPosition());
-                System.out.println("BUSH EATEN!");
+//                System.out.println("BUSH EATEN!");
             }
         }
     }
