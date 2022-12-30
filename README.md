@@ -16,4 +16,4 @@ Nie została zaimplementowana możliwość:
 
 
 ## Zaimplementowane
-- Reszta wymagan powinna być zaimplementowana (dialog przed rozpoczęciem rozgrywki uwzględnia mozliwość wyboru zapisywania danych do pliku csv, który jest otwieralny np przez Excella), użytkownik ma możliwość obserwowania paru symulacji jednocześnie w różnych oknach, jest możliwość zatrzymywania i wznawiania aplikacji w dowolnym momencie, W przypadku podania nieprawidlowych danych startowych w formularzu wyrzucany jest wyjatek IllegalArgumentException.
+- Reszta wymagan powinna być zaimplementowana (dialog przed rozpoczęciem rozgrywki uwzględnia mozliwość wyboru zapisywania danych do pliku csv, który jest otwieralny np przez Excella), użytkownik ma możliwość obserwowania paru symulacji jednocześnie w różnych oknach, jest możliwość zatrzymywania i wznawiania aplikacji w dowolnym momencie, W przypadku podania nieprawidlowych danych startowych w formularzu uzytkownik jest o tym informowany odpowiednim powiadomieniem.
