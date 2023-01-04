@@ -14,7 +14,7 @@ public class Statistics {
     private int currFreeFieldsCount;
     private int[] mostPopularGenome;
     private final int genomeLength;
-    private int averageEnergy;
+    private float averageEnergy;
     private float averageLifeSpan = 0;
     private int numOfDeadAnimals = 0;
 
@@ -30,7 +30,7 @@ public class Statistics {
         int i = 0;
         File tmp;
         do {
-            this.path = "stats" + i + ".csv";
+            this.path = "StatisticFiles/stats" + i + ".csv";
             tmp = new File(path);
             i++;
         } while (tmp.exists());
@@ -105,7 +105,7 @@ public class Statistics {
     }
 
     public void updateAverageEnergy(LinkedList<Animal> animals){
-        int average = 0;
+        float average = 0;
         for (Animal animal: animals){
             average += animal.getEnergy();
         }
@@ -134,11 +134,15 @@ public class Statistics {
         return temp;
     }
 
-    public int getAverageEnergy() {
+    public float getAverageEnergy() {
         return averageEnergy;
     }
 
     public float getAverageLifeSpan() {
         return averageLifeSpan;
+    }
+
+    public int[] getMostPopularGenome() {
+        return mostPopularGenome;
     }
 }
