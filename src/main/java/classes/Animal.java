@@ -56,6 +56,9 @@ public class Animal {
         return genome;
     }
 
+    public Animal(){
+    }
+
     // n is length of genome /constructing first Animals
     public Animal(int n, IMap map, int energy, Vector2d position,int healthyThreshold){
         this.genome= GenomeModifier.createGenome(n);
